@@ -5,12 +5,14 @@
  */
 package validadorcpf;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author natal
  */
 public class ValidaCpf extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form ValidaCpf
      */
@@ -27,21 +29,66 @@ public class ValidaCpf extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        b_validar = new javax.swing.JButton();
+        inputCpf = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        b_validar.setText("Validar");
+        b_validar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                b_validarActionPerformed(evt);
+            }
+        });
+
+        inputCpf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inputCpfActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Validação de CPF");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(70, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(inputCpf))
+                .addGap(67, 67, 67))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(113, 113, 113)
+                .addComponent(b_validar, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(jLabel1)
+                .addGap(33, 33, 33)
+                .addComponent(inputCpf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(b_validar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(68, 68, 68))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void inputCpfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputCpfActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_inputCpfActionPerformed
+
+    private void b_validarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_b_validarActionPerformed
+        validacao(); 
+    }//GEN-LAST:event_b_validarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +126,66 @@ public class ValidaCpf extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton b_validar;
+    private javax.swing.JTextField inputCpf;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    public static boolean validaCpf(String val){
+        int quant = val.length();
+
+        String digitos = val.substring(9);
+
+        if(val.equals("11111111111") || val.equals("22222222222") || val.equals("33333333333") ||
+                val.equals("44444444444") || val.equals("55555555555") || val.equals("66666666666") || 
+                val.equals("77777777777") || val.equals("88888888888") || val.equals("99999999999") || val.equals("00000000000") || quant != 11){
+            return (false);
+        }
+        else{
+
+        int count = 0;
+        int peso = 10;
+        for(int i = 0; i < 9; i++){
+            int num = (int)(val.charAt(i)-48);
+            count = count + (num * peso);
+            peso = peso -1;
+        }
+        
+        int resultado = count % 11 < 2 ? 0 : 11 - (count % 11);
+        
+        String c = String.valueOf(resultado);
+        if(c.charAt(0) != digitos.charAt(0)){
+            System.out.println(digitos.charAt(0));
+            return (false);
+        }
+        
+        count = 0;
+        peso = 11;
+        for(int i = 0; i < 10; i++){
+            int num = (int)(val.charAt(i)-48);
+            count = count + (num * peso);
+            peso = peso -1;
+        }
+        
+        resultado = count % 11 < 2 ? 0 : 11 - (count % 11);
+        c = String.valueOf(resultado);
+        if(c.charAt(0) != digitos.charAt(1)){
+            return (false);
+        }
+
+        return (true);
+
+    }
+}
+        public void validacao(){
+            String cpf = inputCpf.getText();
+
+            if(validaCpf(cpf) == true){
+                JOptionPane.showMessageDialog(null, "Validado");
+            }else{
+               JOptionPane.showMessageDialog(null, "Não Validado");
+            }
+
+        }
+
 }
